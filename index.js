@@ -1,9 +1,11 @@
+//test
+
 function carousel(targetName, pictures){
 
     //var initialization
     const HEIGHT = 500; //in px
     const WIDTH = 500; //in px
-    const TIMING = 400; //in ms
+    const TIMING =; //in ms
     const ANIM_DURATION = 200; //in ms
 
     var i = 1;
@@ -35,46 +37,6 @@ function carousel(targetName, pictures){
 
         let target = document.getElementById(targetName);
         target.appendChild(img);
-    }
-
-    //go to next pic
-    function next(){
-        let imgs = document.getElementsByClassName('frame');
-        i++;
-        pos += WIDTH;
-
-        if(i === pictures.length-1){
-        // if it's the last element, we need to go back to index 1 (without transform-duration
-        // for making it seamless)
-
-        //do normal 
-        for(elem of imgs){
-            elem.style.transform = `translateY(-${pos}px)`;
-        }
-
-        i = 1;
-        pos = WIDTH;
-
-        let regen = imgs[0].addEventListener('transitionend', function(){
-            //wait for end of transition and go to first picture without animation
-            for(elem of imgs){
-                elem.classList.remove('t');
-                elem.style.transform = `translateY(-${pos}px)`;
-            }
-            
-            //re-add animation
-            setTimeout(function(){
-                for(elem of imgs){
-                    elem.classList.add('t');
-                }
-            }, 0);
-        })
-        imgs[0].removeEventListener('transitionend', regen);
-        }else{
-            for(elem of imgs){
-                elem.style.transform = `translateY(-${pos}px)`;
-            }
-        }
     }
 
     //go to previous pic
