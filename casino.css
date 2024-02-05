@@ -1,0 +1,49 @@
+.frame{
+
+    height: var(--HEIGHT);
+    width: var(--WIDTH);
+    display: block;
+    
+}
+
+.t{
+    transition-duration: var(--ANIM_DURATION);
+}
+
+#spinContainer{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#spinOne{
+    position: relative;
+    width:var(--WIDTH); 
+    height:300px;
+    overflow: hidden;
+    border: solid blue;
+}
+#spinTwo{
+    position: relative;
+    width:var(--WIDTH); 
+    height:300px;
+    white-space: nowrap;
+    overflow: hidden;
+    border: solid red;
+}
+
+#spinThree{
+    position: relative;
+    width:var(--WIDTH); 
+    height:300px;
+    white-space: nowrap;
+    overflow: hidden; 
+    border: solid green;
+}
+
+#next:hover{
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.568));
+}
+
+#back:hover{
+    background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.5));
+}

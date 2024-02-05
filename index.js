@@ -1,33 +1,36 @@
-//test
 
-const HEIGHT = 500; //in px
-const WIDTH = 500; //in px
-var i = 1;
-var pos = WIDTH;
+let pictures = [
+    './img/blackforestcake.jpg',
+    './img/lemonpie.jpeg',
+    './img/redvelvetcake.jpg'
+]
+
+
+pictures.push(pictures[0]);
+pictures.splice(0, 0, pictures[pictures.length-2]);
+
+const HEIGHT = 200; //in px
+const WIDTH = 200; //in px
+
 var TIMING = 100;
 var ANIM_DURATION = 50; //in ms
 
 function spinnerSetup(targetName, pictures){
-
-    //add the last item on index 0 and first item on last index for seamlessloop
-    pictures.push(pictures[0]);
-    pictures.splice(0, 0, pictures[pictures.length-2]);
-
-    //construct DOM
-    let target = document.getElementById(targetName);
-    target.innerHTML = `<div id="pic-container"></div>`;
-
+    let spinnerObj = {
+        i : pictures.length - 1,
+        pos : HEIGHT*(pictures.length - 1)
+    }
     //set height,width and animation duration css var 
     document.documentElement.style.setProperty('--WIDTH', `${WIDTH}px`);
     document.documentElement.style.setProperty('--HEIGHT', `${HEIGHT}px`);
+    document.documentElement.style.setProperty('--CHEIGHT', `${HEIGHT}px`);
     document.documentElement.style.setProperty('--ANIM_DURATION', `${ANIM_DURATION}ms`)
-
 
     //create pictures in the img-container
     for(pic in pictures){
         let img = document.createElement('img');
         //setup by start on index 1
-        img.style.transform = `translateY(-${WIDTH}px)`;
+        img.style.transform = `translateY(-${HEIGHT*(pictures.length - 2)-50}px)`;
 
         img.classList.add('frame');
         img.classList.add('t');
@@ -36,66 +39,91 @@ function spinnerSetup(targetName, pictures){
         let target = document.getElementById(targetName);
         target.appendChild(img);
     }
+
+    return spinnerObj;
 }
 
-function spinAnimation(){
+function spinAnimation(container, spinnerObj){
+    //in ms
+    let imgs = document.getElementById(container).getElementsByClassName('frame');
+    spinnerObj.i--;
+    spinnerObj.pos -= HEIGHT;
 
- //in ms
-    let imgs = document.getElementsByClassName('frame');
-    i--;
-    pos -= WIDTH;
 
-    if(i === 0){
+    if(spinnerObj.i === 0){
     //if it's the first element, we need to go back to index -2 (without transform-duration
     //for making it seamless)
 
     //last animation before reset
-    for(elem of imgs){
-        elem.style.transform = `translateY(0)`;
-    }
-
-    i = pictures.length - 2;
-    pos = ((pictures.length - 2) * WIDTH);
-
-    //wait for end of transition and go to last picture without animation
-    let regen = imgs[0].addEventListener('transitionend', function (){
         for(elem of imgs){
-            elem.classList.remove('t');
-            elem.style.transform = `translateY(-${pos}px)`;
+            elem.style.transform = `translateY(0)`;
         }
-        
-        //re-add animation
-        setTimeout(function(){
+
+        spinnerObj.i = pictures.length - 2;
+        spinnerObj.pos = ((pictures.length - 2) * HEIGHT);
+
+        //wait for end of transition and go to last picture without animation
+        let regen = imgs[0].addEventListener('transitionend', function (){
             for(elem of imgs){
-                elem.classList.add('t');
+                elem.classList.remove('t');
+                elem.style.transform = `translateY(-${spinnerObj.pos-50}px)`;
             }
-        }, 0);
-    })
-    imgs[0].removeEventListener('transitionend', regen);
+            
+            //re-add animation
+            setTimeout(function(){
+                for(elem of imgs){
+                    elem.classList.add('t');
+                }
+            }, 0);
+        })
+        imgs[0].removeEventListener('transitionend', regen);
     }else{
         for(elem of imgs){
-            elem.style.transform = `translateY(-${pos}px)`;
+            elem.style.transform = `translateY(-${spinnerObj.pos-50}px)`;
         }
     }
 }
 
-//your set of picture
-let pictures = [
-    './img/fraisier.jpeg',
-    './img/raspberrylayercake.jpg',
-    './img/blackforestcake.jpg',
-    './img/lemonpie.jpeg',
-    './img/redvelvetcake.jpg'
-]
+function spin(container, spinnerObj){
+    let firstPartAnimation = setInterval(function(){
+        spinAnimation(container, spinnerObj);
+    }, TIMING)
 
-//the first parameter is the carousel container div id, the second is the picture url array
-spinnerSetup('spinOne', pictures);
-
-function spin(){
-    let firstPartAnimation = setInterval(spinAnimation, TIMING)
     setTimeout(function(){
         clearInterval(firstPartAnimation);
-    },2000);
+
+        let result = Math.floor(Math.random() * 3);
+        finalResult.push(result);
+
+        let secondPartAnimation = setInterval(function(){
+            spinAnimation(container, spinnerObj);
+            console.log(container, spinnerObj.i-1, result);
+            if(spinnerObj.i-1 === result){
+                clearInterval(secondPartAnimation);
+            }
+        }, TIMING)
+    },3000);
+
 }
 
-spin();
+document.getElementById('test1').addEventListener('click', function(){
+    spinAnimation('spinOne', spinnerOne);
+
+});
+
+var finalResult = [];
+
+let spinnerOne = spinnerSetup('spinOne', pictures);
+spin('spinOne', spinnerOne);
+
+let spinnerTwo = spinnerSetup('spinTwo', pictures);
+spin('spinTwo', spinnerTwo);
+
+let spinnerThree = spinnerSetup('spinThree', pictures);
+spin('spinThree', spinnerThree);
+
+console.log(finalResult)
+
+//Le code pour Javascript pour le jeu du spin
+
+// il s'agit de la fonction qui renvoi les valeurs aleatoires  et qui est appelee a chaque tour de jeu.
