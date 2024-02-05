@@ -3,17 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Passion+One&display=swap" rel="stylesheet">
     <link href="./casino.css" rel="stylesheet" title="casino"/>
-    <title>Carousel</title>
+    <title>Casino</title>
 </head>
 <body>
-    <div id="spinContainer">
-        <div id="spinOne"></div>
-        <div id="spinTwo"></div>
-        <div id="spinThree"></div>
+    <div class="mainContainer">
+        <div class="numbers">
+            <div class="betDiv">
+                Bet : <input id="bet" value="1" size="3">
+            </div>
+            <div class="creditDiv">
+                Credit : <span>300</span>
+            </div>
+        </div>
+        <div id="spinContainer">
+            <div id="spinOne" class="spinSlot"></div>
+            <div id="spinTwo" class="spinSlot"></div>
+            <div id="spinThree" class="spinSlot"></div>
+        </div>
+        <div id="btnContainer">
+            <button id="spinBtn">SPIN</button>
+        </div>
     </div>
-    <button id="test1">TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT</button>
-    <button id="test2"></button>
 </body>
 <script src="./index.js"></script>
 </html>
