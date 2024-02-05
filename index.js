@@ -1,15 +1,13 @@
 //test
 
-function carousel(targetName, pictures){
+const HEIGHT = 500; //in px
+const WIDTH = 500; //in px
+var i = 1;
+var pos = WIDTH;
+var TIMING = 100;
+var ANIM_DURATION = 50; //in ms
 
-    //var initialization
-    const HEIGHT = 500; //in px
-    const WIDTH = 500; //in px
-    const TIMING =; //in ms
-    const ANIM_DURATION = 200; //in ms
-
-    var i = 1;
-    var pos = WIDTH;
+function spinnerSetup(targetName, pictures){
 
     //add the last item on index 0 and first item on last index for seamlessloop
     pictures.push(pictures[0]);
@@ -38,52 +36,49 @@ function carousel(targetName, pictures){
         let target = document.getElementById(targetName);
         target.appendChild(img);
     }
+}
 
-    //go to previous pic
-    function back(){
-        let imgs = document.getElementsByClassName('frame');
-        i--;
-        pos -= WIDTH;
+function spinAnimation(){
 
-        if(i === 0){
-        //if it's the first element, we need to go back to index -2 (without transform-duration
-        //for making it seamless)
+ //in ms
+    let imgs = document.getElementsByClassName('frame');
+    i--;
+    pos -= WIDTH;
 
-        //last animation before reset
-        for(elem of imgs){
-            elem.style.transform = `translateY(0)`;
-        }
+    if(i === 0){
+    //if it's the first element, we need to go back to index -2 (without transform-duration
+    //for making it seamless)
 
-        i = pictures.length - 2;
-        pos = ((pictures.length - 2) * WIDTH);
-
-        //wait for end of transition and go to last picture without animation
-        let regen = imgs[0].addEventListener('transitionend', function (){
-            for(elem of imgs){
-                elem.classList.remove('t');
-                elem.style.transform = `translateY(-${pos}px)`;
-            }
-            
-            //re-add animation
-            setTimeout(function(){
-                for(elem of imgs){
-                    elem.classList.add('t');
-                }
-            }, 0);
-        })
-        imgs[0].removeEventListener('transitionend', regen);
-        }else{
-            for(elem of imgs){
-                elem.style.transform = `translateY(-${pos}px)`;
-            }
-        }
+    //last animation before reset
+    for(elem of imgs){
+        elem.style.transform = `translateY(0)`;
     }
 
-    //add auto-mode
-    var automode = setInterval(back, TIMING);
+    i = pictures.length - 2;
+    pos = ((pictures.length - 2) * WIDTH);
 
-    //add event listener for button
+    //wait for end of transition and go to last picture without animation
+    let regen = imgs[0].addEventListener('transitionend', function (){
+        for(elem of imgs){
+            elem.classList.remove('t');
+            elem.style.transform = `translateY(-${pos}px)`;
+        }
+        
+        //re-add animation
+        setTimeout(function(){
+            for(elem of imgs){
+                elem.classList.add('t');
+            }
+        }, 0);
+    })
+    imgs[0].removeEventListener('transitionend', regen);
+    }else{
+        for(elem of imgs){
+            elem.style.transform = `translateY(-${pos}px)`;
+        }
+    }
 }
+
 //your set of picture
 let pictures = [
     './img/fraisier.jpeg',
@@ -94,4 +89,13 @@ let pictures = [
 ]
 
 //the first parameter is the carousel container div id, the second is the picture url array
-carousel('spinOne', pictures)
+spinnerSetup('spinOne', pictures);
+
+function spin(){
+    let firstPartAnimation = setInterval(spinAnimation, TIMING)
+    setTimeout(function(){
+        clearInterval(firstPartAnimation);
+    },2000);
+}
+
+spin();
