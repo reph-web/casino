@@ -1,10 +1,11 @@
-
 let pictures = [
-    './img/blackforestcake.jpg',
-    './img/lemonpie.jpeg',
-    './img/redvelvetcake.jpg'
+    './assets/img/bomb.png',
+    './assets/img/ghost.png',
+    './assets/img/champ.png',
+    './assets/img/flow.png',
+    './assets/img/star.png',
+    './assets/img/7.png'
 ]
-
 
 pictures.push(pictures[0]);
 pictures.splice(0, 0, pictures[pictures.length-2]);
@@ -14,6 +15,7 @@ const WIDTH = 200; //in px
 
 var TIMING = 100;
 var ANIM_DURATION = 50; //in ms
+var spinning = false;
 
 function spinnerSetup(targetName, pictures){
     let spinnerObj = {
@@ -92,12 +94,11 @@ function spin(container, spinnerObj){
     setTimeout(function(){
         clearInterval(firstPartAnimation);
 
-        let result = Math.floor(Math.random() * 3);
+        let result = Math.floor(Math.random() * 6);
         finalResult.push(result);
 
         let secondPartAnimation = setInterval(function(){
             spinAnimation(container, spinnerObj);
-            console.log(container, spinnerObj.i-1, result);
             if(spinnerObj.i-1 === result){
                 clearInterval(secondPartAnimation);
             }
@@ -106,24 +107,36 @@ function spin(container, spinnerObj){
 
 }
 
-document.getElementById('test1').addEventListener('click', function(){
-    spinAnimation('spinOne', spinnerOne);
-
-});
-
+let spinnerOne = spinnerSetup('spinOne', pictures);
+let spinnerTwo = spinnerSetup('spinTwo', pictures);
+let spinnerThree = spinnerSetup('spinThree', pictures);
 var finalResult = [];
 
-let spinnerOne = spinnerSetup('spinOne', pictures);
-spin('spinOne', spinnerOne);
+document.getElementById('spinBtn').addEventListener('click', function(){
+    if(spinning){
+        return;
+    }
+    spinning = true
+    spin('spinOne', spinnerOne);
 
-let spinnerTwo = spinnerSetup('spinTwo', pictures);
-spin('spinTwo', spinnerTwo);
+    setTimeout(function(){
+        spin('spinTwo', spinnerTwo);
+    }, 300);
 
-let spinnerThree = spinnerSetup('spinThree', pictures);
-spin('spinThree', spinnerThree);
+    setTimeout(function(){
+        spin('spinThree', spinnerThree);
+    }, 600);
 
-console.log(finalResult)
+    setTimeout(function(){
+        spinning = false
+        console.log(finalResult)
+    }, 4000)
+})
 
-//Le code pour Javascript pour le jeu du spin
-
-// il s'agit de la fonction qui renvoi les valeurs aleatoires  et qui est appelee a chaque tour de jeu.
+function calcCredit(finalResult){
+    let bet = document.getElementById(bet)
+    let credit = document.getElementById(credit)
+    let s1 = finalResult[0];
+    let s2 = finalResult[1];
+    let s3 = finalResult[2];
+}
