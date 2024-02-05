@@ -1,0 +1,50 @@
+.frame{
+
+    height: var(--HEIGHT);
+    width: var(--WIDTH);
+    white-space: nowrap;
+}
+
+.t{
+    transition-duration: var(--ANIM_DURATION);
+}
+
+#spinOne{
+    position: relative;
+    width:var(--WIDTH); 
+    height:var(--HEIGHT);
+    /*white-space: nowrap;*/
+    
+    /* overflow: hidden; */
+}
+
+#button-container{
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    width:var(--WIDTH);
+    height:var(--HEIGHT);
+    z-index: 1;
+}
+
+.nav-btn{
+    color: transparent;
+    font-size: 70px;
+    height: 100%;
+    width: 15%;
+    border: none;
+    background: none;
+    transition: 0.4s
+}
+
+.nav-btn:hover{
+    color: rgb(228, 228, 228);
+}
+
+#next:hover{
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.568));
+}
+
+#back:hover{
+    background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.5));
+}
