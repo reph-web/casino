@@ -19,6 +19,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 #bet{
@@ -87,15 +88,87 @@ body{
     align-items: center;
 }
 
-#spinBtn{
-    font-size: 60px;
+.btn{
     font-family: 'Passion One', sans-serif;
     background-color: rgb(187, 0, 0);
     color: white;
     border: solid #460000;
+}
+.btn:active{
+    background-color: rgb(252, 48, 48);
+}
+
+#addBtn{
+    font-size: 20px;
+    margin-left: 10px;
+    padding: 3px 15px; 
+}
+
+#spinBtn{
+    font-size: 60px;
     margin-top: 20px;
     padding: 10px 40px; 
 }
-#spinBtn:active{
-    background-color: rgb(252, 48, 48);
+
+.incDecBtnContainer{
+    display: grid;
+    margin : 0;
+    margin-left: 10px;
+}
+
+#incBetBtn{
+    font-size: 13px;
+    width : 100%;
+    border-width: 2px;
+    margin-bottom: 1px;
+}
+
+#decBetBtn{
+    margin-top: 1px;
+    font-size: 13px;
+    width : 100%;
+    border-width: 2px;
+
+}
+
+.alert-bg{
+    background-color: #181818;
+}
+
+.alert-title{
+    font-family: 'Roboto', sans-serif;;
+
+}
+
+.alert-text{
+    font-family: 'Roboto', sans-serif;;
+
+}
+
+.alert-input {
+    outline: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;;
+    background-color: #ffffff71;
+}
+
+.alert-input:focus {
+    outline-color: #460000;
+}
+
+.alert-btn{
+    font-size: 30px;
+    padding: 5px 50px;
+}
+
+
+#gain{
+    display: block;
+    margin : auto auto;
+    font-size: 20px;
 }

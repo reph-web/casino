@@ -14,10 +14,18 @@
         <div class="numbers">
             <div class="betDiv">
                 Bet : <input id="bet" value="1" size="3">
+                <div class="incDecBtnContainer">
+                    <button id="incBetBtn" class="btn">↑</button>
+                    <button id="decBetBtn" class="btn">↓</button>
+                </div>
             </div>
             <div class="creditDiv">
-                Credit : <span>300</span>
+                Credit : <span id="credit">300</span>
+                <button id="addBtn" class="btn">add</button>
             </div>
+            
+            <span id="gain"></span>
+
         </div>
         <div id="spinContainer">
             <div id="spinOne" class="spinSlot"></div>
@@ -25,9 +33,10 @@
             <div id="spinThree" class="spinSlot"></div>
         </div>
         <div id="btnContainer">
-            <button id="spinBtn">SPIN</button>
+            <button id="spinBtn" class="btn">SPIN</button>
         </div>
     </div>
 </body>
 <script src="./index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </html>

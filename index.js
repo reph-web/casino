@@ -7,6 +7,7 @@ let pictures = [
     './assets/img/7.png'
 ]
 
+
 pictures.push(pictures[0]);
 pictures.splice(0, 0, pictures[pictures.length-2]);
 
@@ -15,7 +16,7 @@ const WIDTH = 200; //in px
 
 var TIMING = 100;
 var ANIM_DURATION = 50; //in ms
-var spinning = false;
+var isSpinning = false;
 
 function spinnerSetup(targetName, pictures){
     let spinnerObj = {
@@ -87,6 +88,9 @@ function spinAnimation(container, spinnerObj){
 }
 
 function spin(container, spinnerObj){
+    if(isBetIncorrect()){
+        return;
+    }
     let firstPartAnimation = setInterval(function(){
         spinAnimation(container, spinnerObj);
     }, TIMING)
@@ -112,11 +116,14 @@ let spinnerTwo = spinnerSetup('spinTwo', pictures);
 let spinnerThree = spinnerSetup('spinThree', pictures);
 var finalResult = [];
 
+
 document.getElementById('spinBtn').addEventListener('click', function(){
-    if(spinning){
+    let credit = parseInt(document.getElementById("credit").innerText);
+    let bet = parseInt(document.getElementById("bet").value);
+    if(isBetIncorrect(bet, credit)){
         return;
     }
-    spinning = true
+    isSpinning = true
     spin('spinOne', spinnerOne);
 
     setTimeout(function(){
@@ -128,15 +135,151 @@ document.getElementById('spinBtn').addEventListener('click', function(){
     }, 600);
 
     setTimeout(function(){
-        spinning = false
-        console.log(finalResult)
+        isSpinning = false
+        calcCredit(bet, credit, finalResult);
+        finalResult = [];
     }, 4000)
 })
 
-function calcCredit(finalResult){
-    let bet = document.getElementById(bet)
-    let credit = document.getElementById(credit)
+function calcCredit(bet, credit, finalResult){
+    //var
+    let modBet = -1;
     let s1 = finalResult[0];
     let s2 = finalResult[1];
     let s3 = finalResult[2];
+
+    //winning condition
+    console.log(s1, s2, s3);
+    if(s1 === s2 && s2 === s3){ // calculate winning if 3 same symbols
+        console.log("winning");
+        switch(s1){
+            case 0:
+                modBet *= 2;
+                break;
+            case 1:
+                modBet *= 3;
+                break;
+            case 3:
+                modBet *= 4;
+                break;
+            case 4:
+                modBet *= 5;
+                break;
+            case 5:
+                modBet *= 10;
+                break;
+        }
+    }else if(s1 === s2 || s2 === s3){
+        console.log("winning"); // calculate  winning if 2 same symbole adjacent
+        switch(s1 === s2 ? s2 : s3){
+            case 0:
+                modBet *= 0.5;
+                break;
+            case 1:
+                modBet *= 0.75;
+                break;
+            case 3:
+                modBet *= 1.25;
+                break;
+            case 4:
+                modBet *= 1.5;
+                break;
+            case 5:
+                modBet *= 1.75;
+                break;
+        }
+    }
+
+    gainSpan = document.getElementById(gain);
+    if(modBet >= 1){
+        gain.innerText = 'Gain: $' + (modBet*bet);
+        gain.style.color = 'green';
+    }else{
+        gain.innerText = 'Loss: -$' + (-modBet*bet);
+        gain.style.color = 'red';
+    }
+ 
+    
+
+    let finalCredit = credit + bet*modBet;
+    finalCredit < 0 ? 0 : finalCredit;
+    if(!finalCredit){ //alert if you lose all your credit
+        Swal.fire({
+            text :'GAME OVER\nYou lose all your credit, please reload your balance'
+            })
+    }
+    document.getElementById("credit").innerText = finalCredit;
 }
+
+function isBetIncorrect(bet, credit){
+    var swalCustom = Swal.mixin({
+        customClass: {
+          confirmButton: "btn alert-btn",
+          input: 'alert-input',
+          text : 'alert-text',
+          title : 'alert-title'
+        },
+        color: '#fff',
+        background:'#181818',
+        buttonsStyling: false
+      });
+    if(credit === 0 && bet !== 0){
+        swalCustom.fire("Your balance is empty, please reload.");
+        return true;
+    }
+    if(bet < 0 || bet > credit){
+        swalCustom.fire({
+            text : "Please make a bet between 0 and your current credit"
+        });      
+        return true;
+    }
+    return false;
+}
+
+
+// Refill button
+
+document.getElementById('addBtn').addEventListener('click', function(){
+    var swalCustom = Swal.mixin({
+        customClass: {
+          confirmButton: "btn alert-btn",
+          input: 'alert-input',
+          text : 'alert-text',
+          title : 'alert-title'
+        },
+        color: '#fff',
+        background:'#181818',
+        buttonsStyling: false
+      });
+
+    swalCustom.fire({
+        title: "Enter how much you want to refill:",
+        input: "text"
+    }).then((result) => {
+        console.log(result);
+        let isNull = !result ? true : false;
+        let addedCredit = isNull ? 0 : parseFloat(result.value);
+
+        if(addedCredit<0 || (isNaN(addedCredit) && !null)){
+            addedCredit = 0
+            swalCustom.fire({title : "Invalid value", text:"Enter Positive Number"}) 
+        }
+        
+        let actualCredit = parseFloat(document.getElementById("credit").innerText);
+        document.getElementById("credit").innerText = actualCredit + addedCredit; 
+    })
+})
+
+// Increase et decrease button
+document.getElementById('incBetBtn').addEventListener('click', function(){
+    let betInput = document.getElementById('bet');
+    betInput.value = parseFloat(betInput.value) + 1;
+})
+document.getElementById('decBetBtn').addEventListener('click', function(){
+
+    let betInput = document.getElementById('bet');
+    console.log(parseFloat(betInput));
+    if(parseFloat(betInput.value) > 0){
+        betInput.value = parseFloat(betInput.value) - 1;
+    }
+})
