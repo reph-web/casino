@@ -7,7 +7,6 @@ let pictures = [
     './assets/img/7.png'
 ]
 
-
 pictures.push(pictures[0]);
 pictures.splice(0, 0, pictures[pictures.length-2]);
 
@@ -51,7 +50,6 @@ function spinAnimation(container, spinnerObj){
     let imgs = document.getElementById(container).getElementsByClassName('frame');
     spinnerObj.i--;
     spinnerObj.pos -= HEIGHT;
-
 
     if(spinnerObj.i === 0){
     //if it's the first element, we need to go back to index -2 (without transform-duration
@@ -149,9 +147,7 @@ function calcCredit(bet, credit, finalResult){
     let s3 = finalResult[2];
 
     //winning condition
-    console.log(s1, s2, s3);
     if(s1 === s2 && s2 === s3){ // calculate winning if 3 same symbols
-        console.log("winning");
         switch(s1){
             case 0:
                 modBet *= 2;
@@ -170,7 +166,7 @@ function calcCredit(bet, credit, finalResult){
                 break;
         }
     }else if(s1 === s2 || s2 === s3){
-        console.log("winning"); // calculate  winning if 2 same symbole adjacent
+        // calculate  winning if 2 same symbole adjacent
         switch(s1 === s2 ? s2 : s3){
             case 0:
                 modBet *= 0.5;
@@ -192,10 +188,10 @@ function calcCredit(bet, credit, finalResult){
 
     gainSpan = document.getElementById(gain);
     if(modBet >= 1){
-        gain.innerText = 'Gain: $' + (modBet*bet);
+        gain.innerText = 'Gain: ' + (modBet*bet);
         gain.style.color = 'green';
     }else{
-        gain.innerText = 'Loss: -$' + (-modBet*bet);
+        gain.innerText = 'Loss: -' + (-modBet*bet);
         gain.style.color = 'red';
     }
  
@@ -256,7 +252,6 @@ document.getElementById('addBtn').addEventListener('click', function(){
         title: "Enter how much you want to refill:",
         input: "text"
     }).then((result) => {
-        console.log(result);
         let isNull = !result ? true : false;
         let addedCredit = isNull ? 0 : parseFloat(result.value);
 
@@ -278,7 +273,6 @@ document.getElementById('incBetBtn').addEventListener('click', function(){
 document.getElementById('decBetBtn').addEventListener('click', function(){
 
     let betInput = document.getElementById('bet');
-    console.log(parseFloat(betInput));
     if(parseFloat(betInput.value) > 0){
         betInput.value = parseFloat(betInput.value) - 1;
     }
